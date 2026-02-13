@@ -28,4 +28,4 @@ docker run -d \
   -v ./config.json:/app/config.json \
   -e WEB_USERNAME=admin \
   -e WEB_PASSWORD=yourpassword \
-  ghcr.io/skywrt/suppermedia:latest
+  ghcr.io/skywrt/supermedia:latest
