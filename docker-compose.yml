@@ -2,7 +2,7 @@ version: '3.8'
 
 services:
   suppermedia:
-    image: ghcr.io/skywrt/suppermedia:latest
+    image: ghcr.io/skywrt/supermedia:latest
     container_name: suppermedia
     ports:
       - "5678:5678"
