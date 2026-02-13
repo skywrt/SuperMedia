@@ -1,0 +1,18 @@
+version: '3.8'
+
+services:
+  suppermedia:
+    image: ghcr.io/skywrt/suppermedia:latest
+    container_name: suppermedia
+    ports:
+      - "5678:5678"
+    volumes:
+      - ./config.json:/app/config.json
+      - ./downloads:/app/downloads
+    environment:
+      - WEB_USERNAME=${WEB_USERNAME:-admin}
+      - WEB_PASSWORD=${WEB_PASSWORD:-suppermedia123}
+      - DOWNLOADER_TYPE=${DOWNLOADER_TYPE:-aria2}
+      - DOWNLOADER_URL=${DOWNLOADER_URL:-http://aria2:6800/jsonrpc}
+      - DOWNLOADER_TOKEN=${DOWNLOADER_TOKEN:-}
+    restart: unless-stopped
