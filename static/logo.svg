@@ -1,0 +1,14 @@
+<!-- static/logo.svg -->
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="50" cy="50" r="45" fill="url(#gradient)" stroke="#764ba2" stroke-width="2"/>
+    <path d="M35 45 L50 25 L65 45 L50 65 L35 45" fill="white" opacity="0.9"/>
+    <circle cx="50" cy="45" r="5" fill="#764ba2"/>
+    <rect x="30" y="55" width="40" height="5" rx="2.5" fill="white" opacity="0.9"/>
+    <rect x="35" y="65" width="30" height="5" rx="2.5" fill="white" opacity="0.9"/>
+    <defs>
+        <linearGradient id="gradient" x1="5" y1="5" x2="95" y2="95" gradientUnits="userSpaceOnUse">
+            <stop stop-color="#667eea"/>
+            <stop offset="1" stop-color="#764ba2"/>
+        </linearGradient>
+    </defs>
+</svg>
