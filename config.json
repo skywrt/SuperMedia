@@ -1,0 +1,32 @@
+{
+  "search_sources": {
+    "sehuatang": {
+      "enabled": true,
+      "base_url": "https://www.sehuatang.net",
+      "search_path": "/search.php?mod=forum&searchid=1&orderby=lastpost&ascdesc=desc&searchsubmit=yes&kw=",
+      "timeout": 30,
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36"
+    }
+  },
+  "downloaders": {
+    "aria2": {
+      "default_url": "http://localhost:6800/jsonrpc",
+      "default_token": ""
+    },
+    "qbittorrent": {
+      "default_url": "http://localhost:8080",
+      "default_username": "admin",
+      "default_password": "adminadmin"
+    },
+    "transmission": {
+      "default_url": "http://localhost:9091/transmission/rpc",
+      "default_username": "",
+      "default_password": ""
+    }
+  },
+  "web": {
+    "logo_text": "SuperMedia",
+    "logo_subtext": "色花堂资源搜索器",
+    "search_placeholder": "输入番号，例如：ABC-123"
+  }
+}
