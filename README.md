@@ -1,6 +1,6 @@
 # SuperMedia - 色花堂资源搜索下载工具
 
-[![Build and Push Docker Image](https://github.com/skywrt/suppermedia/actions/workflows/docker-build.yml/badge.svg)](https://github.com/skywrt/SuperMedia/blob/main/.github/workflows/docker-build.yml)
+[![Build and Push Docker Image](https://github.com/skywrt/suppermedia/actions/workflows/docker-build.yml/badge.svg)](https://github.com/skywrt/suppermedia/actions/workflows/docker-build.yml)
 
 支持 amd64/arm64 多架构平台的 Docker 容器，用于搜索色花堂资源并推送到下载器。
 
