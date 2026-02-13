@@ -21,7 +21,7 @@ CONFIG = load_config()
 
 # 从环境变量获取用户名密码
 VALID_USERNAME = os.environ.get('WEB_USERNAME', 'admin')
-VALID_PASSWORD = os.environ.get('WEB_PASSWORD', 'suppermedia123')
+VALID_PASSWORD = os.environ.get('WEB_PASSWORD', 'supermedia123')
 
 def login_required(f):
     @wraps(f)
