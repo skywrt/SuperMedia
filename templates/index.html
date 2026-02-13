@@ -1,0 +1,389 @@
+<!-- templates/index.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ config.logo_text }} - {{ config.logo_subtext }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #f5f7fa;
+            color: #333;
+        }
+        .header {
+            background: white;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 20px 0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        .logo img {
+            width: 40px;
+            height: 40px;
+            margin-right: 10px;
+        }
+        .logo h1 {
+            font-size: 24px;
+            color: #764ba2;
+        }
+        .logo span {
+            font-size: 14px;
+            color: #999;
+            margin-left: 10px;
+        }
+        .logout-btn {
+            padding: 8px 16px;
+            background: #f1f1f1;
+            color: #666;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .logout-btn:hover {
+            background: #e1e1e1;
+        }
+        .search-section {
+            padding: 40px 0;
+            text-align: center;
+        }
+        .search-box {
+            max-width: 600px;
+            margin: 0 auto;
+            position: relative;
+        }
+        .search-input {
+            width: 100%;
+            padding: 15px 20px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 30px;
+            outline: none;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+        .search-input:focus {
+            border-color: #764ba2;
+            box-shadow: 0 0 0 3px rgba(118, 75, 162, 0.1);
+        }
+        .search-btn {
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            padding: 10px 25px;
+            background: #764ba2;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .search-btn:hover {
+            background: #5a3e7a;
+        }
+        .search-tip {
+            margin-top: 10px;
+            color: #666;
+            font-size: 14px;
+        }
+        .results-section {
+            padding: 20px 0 40px;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+            display: none;
+        }
+        .loading-spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #764ba2;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .results-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+        }
+        .result-card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        .result-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        .result-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+        .result-meta {
+            display: flex;
+            justify-content: space-between;
+            color: #666;
+            font-size: 12px;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #eee;
+        }
+        .result-actions {
+            display: flex;
+            gap: 10px;
+        }
+        .btn {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .btn-primary {
+            background: #764ba2;
+            color: white;
+        }
+        .btn-primary:hover {
+            background: #5a3e7a;
+        }
+        .btn-secondary {
+            background: #f1f1f1;
+            color: #666;
+        }
+        .btn-secondary:hover {
+            background: #e1e1e1;
+        }
+        .no-results {
+            text-align: center;
+            padding: 60px;
+            color: #666;
+        }
+        .downloader-selector {
+            margin-bottom: 20px;
+            text-align: right;
+        }
+        select {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            outline: none;
+            cursor: pointer;
+        }
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 15px 20px;
+            background: #333;
+            color: white;
+            border-radius: 5px;
+            display: none;
+            z-index: 1000;
+        }
+        .notification.success {
+            background: #27ae60;
+        }
+        .notification.error {
+            background: #e74c3c;
+        }
+        .footer {
+            text-align: center;
+            padding: 20px 0;
+            color: #999;
+            font-size: 12px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="notification" id="notification"></div>
+    
+    <div class="header">
+        <div class="container header-content">
+            <div class="logo">
+                <img src="{{ url_for('static', filename='logo.svg') }}" alt="Logo">
+                <h1>{{ config.logo_text }}</h1>
+                <span>{{ config.logo_subtext }}</span>
+            </div>
+            <a href="/logout" class="logout-btn">退出登录</a>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="search-section">
+            <div class="search-box">
+                <input type="text" id="searchInput" class="search-input" placeholder="{{ config.search_placeholder }}" autofocus>
+                <button class="search-btn" onclick="search()">搜索</button>
+            </div>
+            <div class="search-tip">
+                支持中文、英文、数字搜索，例如：ABC-123、中文字幕
+            </div>
+        </div>
+
+        <div class="downloader-selector">
+            <label for="downloader">下载到：</label>
+            <select id="downloader">
+                <option value="aria2">Aria2</option>
+                <option value="qbittorrent">qBittorrent</option>
+                <option value="transmission">Transmission</option>
+            </select>
+        </div>
+
+        <div class="loading" id="loading">
+            <div class="loading-spinner"></div>
+            <p>正在搜索中，请稍候...</p>
+        </div>
+
+        <div class="results-section" id="results"></div>
+    </div>
+
+    <div class="footer">
+        <p>SuperMedia © 2024 - 色花堂资源搜索工具</p>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        searchInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                search();
+            }
+        });
+
+        async function search() {
+            const keyword = searchInput.value.trim();
+            if (!keyword) {
+                showNotification('请输入搜索内容', 'error');
+                return;
+            }
+
+            const resultsDiv = document.getElementById('results');
+            const loadingDiv = document.getElementById('loading');
+            
+            resultsDiv.innerHTML = '';
+            loadingDiv.style.display = 'block';
+
+            try {
+                const response = await fetch(`/search?q=${encodeURIComponent(keyword)}`);
+                const data = await response.json();
+
+                loadingDiv.style.display = 'none';
+
+                if (data.error) {
+                    resultsDiv.innerHTML = `<div class="no-results">❌ ${data.error}</div>`;
+                } else if (data.results && data.results.length > 0) {
+                    displayResults(data.results);
+                } else {
+                    resultsDiv.innerHTML = '<div class="no-results">🔍 没有找到相关内容</div>';
+                }
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                resultsDiv.innerHTML = '<div class="no-results">❌ 搜索失败，请稍后重试</div>';
+            }
+        }
+
+        function displayResults(results) {
+            const resultsDiv = document.getElementById('results');
+            let html = '<div class="results-grid">';
+            
+            results.forEach(item => {
+                html += `
+                    <div class="result-card">
+                        <div class="result-title">${item.title}</div>
+                        <div class="result-meta">
+                            <span>👤 ${item.author}</span>
+                            <span>💬 ${item.replies} / 👁️ ${item.views}</span>
+                            <span>🕒 ${item.last_post}</span>
+                        </div>
+                        <div class="result-actions">
+                            <a href="${item.link}" target="_blank" class="btn btn-secondary">查看帖子</a>
+                            <button onclick="downloadMagnet('${item.link}')" class="btn btn-primary">获取磁力</button>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            html += '</div>';
+            resultsDiv.innerHTML = html;
+        }
+
+        async function downloadMagnet(postUrl) {
+            try {
+                // 这里需要实现从帖子页面提取磁力链接的逻辑
+                // 由于跨域限制，这个功能需要后端实现
+                // 这里模拟一个磁力链接
+                const magnet = 'magnet:?xt=urn:btih:example';
+                const title = '示例资源';
+                
+                const downloader = document.getElementById('downloader').value;
+                
+                const response = await fetch('/download', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        magnet: magnet,
+                        title: title,
+                        downloader: downloader
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showNotification('下载任务已添加', 'success');
+                } else {
+                    showNotification(data.error, 'error');
+                }
+            } catch (error) {
+                showNotification('添加下载任务失败', 'error');
+            }
+        }
+
+        function showNotification(message, type = 'info') {
+            const notification = document.getElementById('notification');
+            notification.textContent = message;
+            notification.className = `notification ${type}`;
+            notification.style.display = 'block';
+            
+            setTimeout(() => {
+                notification.style.display = 'none';
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
